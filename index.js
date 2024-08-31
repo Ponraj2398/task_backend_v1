@@ -2,7 +2,9 @@ const express = require("express")
 const app = express()
 const mongoose = require("mongoose")
 const PORT = process.env.PORT || 8080
-const MONGODB_URL="mongodb://127.0.0.1:27017/DBConnection"
+// const MONGODB_URL="mongodb://127.0.0.1:27017/DBConnection"
+const MONGODB_URL="mongodb+srv://ponrajrahul23:4AODhTkWSk6AyCQg@api.6bbqu.mongodb.net/?retryWrites=true&w=majority&appName=api"
+
 const router = express.Router()
 
 // DB Connection
