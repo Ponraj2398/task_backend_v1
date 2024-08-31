@@ -1,15 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../Model/UserModel')
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 router.post('/register/add', async (req, res) => {
     try 
     {
         const { phone, name, password } = req.body;
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User({ phone, name, password: hashedPassword });
+        // const hashedPassword = await bcrypt.hash(password, 10);
+        const user = new User({ phone, name, password: password });
         await user.save();
         res.status(201).json({ message: 'User registered successfully' });      
     } 
@@ -26,8 +26,8 @@ router.post('/login', async (req, res) => {
         if (!user) {
             return res.status(401).json({ error: 'Authentication Failed' });
         }
-        const passwordMatch = await bcrypt.compare(password, user.password);
-        if (!passwordMatch) {
+        // const passwordMatch = await bcrypt.compare(password, user.password);
+        if (password != user.password) {
             return res.status(401).json({ error: 'Authentication Failed' });
         }
         const token = jwt.sign({ userId: user._id }, 'this-can-be-any-random-key', {
