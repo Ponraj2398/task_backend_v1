@@ -53,8 +53,8 @@ const path = require('path')
 // app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 app.use(express.json())
 
-// app.use('/public/data/uploads', express.static(path.join(__dirname, 'public/data/uploads')));
-app.use('/data/uploads', express.static(path.join(__dirname, 'public/data/uploads')));
+app.use('/public/data/uploads', express.static(path.join(__dirname, 'public/data/uploads')));
+// app.use('/data/uploads', express.static(path.join(__dirname, 'public/data/uploads')));
 const verifyToken = require("./Middleware/AuthMiddleware")
 
 
