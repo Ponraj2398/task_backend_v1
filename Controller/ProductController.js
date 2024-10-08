@@ -26,8 +26,8 @@ exports.insert = async (req, res) => {
             name,
             description,
             price,
-            // image
-            image: req.file.filename 
+            image
+            // image: req.file.filename 
         });
 
         await newProduct.save();
