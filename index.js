@@ -6,7 +6,12 @@ const PORT = process.env.PORT || 8080
 const MONGODB_URL="mongodb+srv://ponrajrahul23:4AODhTkWSk6AyCQg@api.6bbqu.mongodb.net/?retryWrites=true&w=majority&appName=api"
 
 const router = express.Router()
-
+// --------------------------------CORS Policy enable---------------------------------
+const cors=require("cors")
+app.use(cors({
+    origin: "*"
+}))
+// -----------------------------------------------------------------------------------
 // DB Connection
 
 mongoose.connect(MONGODB_URL)
@@ -56,20 +61,6 @@ app.use(express.json())
 app.use('/public/data/uploads', express.static(path.join(__dirname, 'public/data/uploads')));
 // app.use('/data/uploads', express.static(path.join(__dirname, 'public/data/uploads')));
 const verifyToken = require("./Middleware/AuthMiddleware")
-
-
-// --------------------------------CORS Policy enable---------------------------------
-const cors=require("cors")
-app.use(cors({
-    origin: "*"
-}))
-// -----------------------------------------------------------------------------------
-
-
-
-
-
-
 
 
 
