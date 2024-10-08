@@ -20,20 +20,20 @@ exports.insert = async (req, res) => {
     try {
         const { name, description, price } = req.body;
         // Check if file is uploaded
-        if (!req.file) {
-            console.error('No file uploaded');
-            return res.status(400).json({ message: 'No file uploaded' });
-        }
-        // const image = req.file.path;
-        const image = req.file ? req.file.path : null;
+        // if (!req.file) {
+        //     console.error('No file uploaded');
+        //     return res.status(400).json({ message: 'No file uploaded' });
+        // }
+        const image = req.file.path;
+        // const image = req.file ? req.file.path : null;
         // const image = `/data/uploads/${req.file.filename}`; // Store the relative path
 
         const newProduct = new Product({
             name,
             description,
             price,
-            image
-            // image: req.file.filename 
+            // image
+            image: req.file.filename 
         });
 
         await newProduct.save();
@@ -150,21 +150,21 @@ exports.delete = [(req, res) => {
 exports.update = async (req, res) => {
     try {
         const { name, description, price } = req.body;
-        // const image = req.file.path;
+        const image = req.file.path;
         // Check if file is uploaded
-        if (!req.file) {
-            console.error('No file uploaded');
-            return res.status(400).json({ message: 'No file uploaded' });
-        }
-        const image = req.file ? req.file.path : null;
+        // if (!req.file) {
+        //     console.error('No file uploaded');
+        //     return res.status(400).json({ message: 'No file uploaded' });
+        // }
+        // const image = req.file ? req.file.path : null;
         // const image = `/data/uploads/${req.file.filename}`; // Store the relative path
 
         const updatedProduct = await Product.findByIdAndUpdate(req.params.id, {
             name,
             description,
             price,
-            image
-            // image: req.file.filename
+            // image
+            image: req.file.filename
         }, { new: true });
 
         res.status(200).json({ message: 'Product updated successfully', updatedProduct });
