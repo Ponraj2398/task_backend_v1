@@ -24,16 +24,16 @@ exports.insert = async (req, res) => {
         //     console.error('No file uploaded');
         //     return res.status(400).json({ message: 'No file uploaded' });
         // }
-        // const image = req.file.path;
+        const image = req.file.path;
         // const image = req.file ? req.file.path : null;
-        const image = `/data/uploads/${req.file.filename}`; // Store the relative path
+        // const image = `/data/uploads/${req.file.filename}`; // Store the relative path
 
         const newProduct = new Product({
             name,
             description,
             price,
-            image
-            // image: req.file.filename 
+            // image
+            image: req.file.filename 
         });
 
         await newProduct.save();
