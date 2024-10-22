@@ -1,40 +1,87 @@
 const Product = require("../Model/ProductModel")
 const multer = require("multer");
 const path = require("path");
+// ----------------------- //
+const fs = require('fs');
+const uploadPath = path.join(__dirname, '../public/data/uploads/');
 
-// Define storage for the images
+// Ensure directory exists
+if (!fs.existsSync(uploadPath)) {
+    fs.mkdirSync(uploadPath, { recursive: true });
+}
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, path.join(__dirname, '../public/data/uploads/')); // Corrected path
+        cb(null, uploadPath); // Corrected path
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname)); // Append extension
     }
 });
 
+// ---------------------- //
+
+// Define storage for the images
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, path.join(__dirname, '../public/data/uploads/')); // Corrected path
+//     },
+//     filename: function (req, file, cb) {
+//         cb(null, Date.now() + path.extname(file.originalname)); // Append extension
+//     }
+// });
+
 // // Initialize multer with storage
 const upload = multer({ storage: storage });
 
+exports.insert = [
+    upload.single('image'),
+    async (req, res) => {
+        try {
+            const { name, description, price } = req.body;
 
-exports.insert = async (req, res) => {
-    try {
-        const { name, description, price } = req.body;
-        const image = req.file.path;
+            if (!req.file) {
+                return res.status(400).json({ message: 'Image file is required' });
+            }
 
-        const newProduct = new Product({
-            name,
-            description,
-            price,
-            image: req.file.filename 
-        });
+            console.log('Request body:', req.body);
+            console.log('Uploaded file:', req.file);
 
-        await newProduct.save();
-        res.status(200).json({ message: 'Product added successfully' });
-    } catch (error) {
-        console.error('Error adding product:', error);
-        res.status(500).json({ message: 'Internal server error' });
+            const newProduct = new Product({
+                name,
+                description,
+                price,
+                image: req.file.filename
+            });
+
+            await newProduct.save();
+            res.status(200).json({ message: 'Product added successfully' });
+        } catch (error) {
+            console.error('Error adding product:', error.message);
+            res.status(500).json({ message: 'Internal server error', error: error.message });
+        }
     }
-};
+];
+
+// exports.insert = async (req, res) => {
+//     try {
+//         const { name, description, price } = req.body;
+//         const image = req.file.path;
+
+//         const newProduct = new Product({
+//             name,
+//             description,
+//             price,
+//             image: req.file.filename 
+//         });
+
+//         await newProduct.save();
+//         res.status(200).json({ message: 'Product added successfully' });
+//     } catch (error) {
+//         console.error('Error adding product:', error);
+//         res.status(500).json({ message: 'Internal server error' });
+//     }
+// };
 exports.list = [(req, res) => {
     Product.find()
         .then((products) => {
